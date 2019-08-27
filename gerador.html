@@ -1,0 +1,422 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+
+<style>
+  ::-webkit-input-placeholder {
+    font-size: 12px;
+  }
+
+  input:-moz-placeholder {
+    font-size: 12px;
+  }
+
+  textarea:-moz-placeholder {
+    font-size: 12px;
+  }
+
+  textarea {
+    padding: 5px;
+    width: 100%;
+  }
+
+  label {
+    font-size: 9px;
+    color: #2c507e;
+  }
+
+  button {
+    padding: 10px;
+    color: #ffffff;
+    background-color: #2c507e;
+    border-radius: 3px;
+    margin: 2px;
+  }
+</style>
+
+<script>
+
+  function alias(v) {
+    return v.toString()
+      .toLowerCase()
+      .replace(/[àÀáÁâÂãäÄÅåª]+/g, 'a')
+      .replace(/[èÈéÉêÊëË]+/g, 'e')
+      .replace(/[ìÌíÍîÎïÏ]+/g, 'i')
+      .replace(/[òÒóÓôÔõÕöÖº]+/g, 'o')
+      .replace(/[ùÙúÚûÛüÜ]+/g, 'u')
+      .replace(/[ýÝÿŸ]+/g, 'y')
+      .replace(/[ñÑ]+/g, 'n')
+      .replace(/[çÇ]+/g, 'c')
+      .replace(/[ß]+/g, 'ss')
+      .replace(/[Ææ]+/g, 'ae')
+      .replace(/[Øøœ]+/g, 'oe')
+      .replace(/[%]+/g, 'pct')
+      .replace(/\s+/g, '_')
+      .replace(/[^\w\-]+/g, '')
+      //.replace(/\-\-+/g, '-')
+      .replace(/^-+/, '')
+      .replace(/-+$/, '');
+  }
+
+  // Assegura que o documento html está totalmente carregado
+  $(document).ready(function () {
+    // Clicando no botão executa a conversão  
+
+    $('#botao-converter').click(function () {
+
+      // Obtém o conteúdo do textarea e divide-o em linhas
+      var arrayDeLinhas = $('#sigla_destino').val().split('\n');
+      var arrayDeLinhas1 = $('#nome_destino').val().split('\n');
+
+      var arrayDeLinhas2 = $('#sigla_origem').val().split('\n');
+      var arrayDeLinhas3 = $('#nome_origem').val().split('\n');
+
+      var valor = $('#valor').val().split('\n');
+      var link = $('#link').val().split('\n');
+
+      var destaque = $('#destaque').val().split('\n');
+
+      var resultado_final = '';
+      var resultado_alias = '';
+
+      var resultado_final2 = '';
+      var resultado_alias2 = '';
+
+      var final = [];
+
+      var resultados_destaques = [];
+      var outros_resultados = [];
+
+      // Loop para validar e converter o conteúdo para html
+      for (var i = 0; i < arrayDeLinhas.length; i++) {
+
+
+        var linha = arrayDeLinhas[i];
+        var linha1 = arrayDeLinhas1[i];
+
+        var linha2 = arrayDeLinhas2[i];
+        var linha3 = arrayDeLinhas3[i];
+
+        var destaque_1 = destaque[i];
+
+        if (destaque_1 == 'x' || destaque_1 == 'X') {
+          final = resultados_destaques;
+        } else {
+          final = outros_resultados;
+        }
+
+        resultado_final = linha1 + ' (' + linha + ')';
+        resultado_alias = alias(linha1 + ' (' + linha + ')');
+
+        resultado_final2 = linha3 + ' (' + linha2 + ')';
+        resultado_alias2 = alias(linha2);
+
+
+        final.push('<!-- ITEM -->\n<tr class="item_viagem" data-destino="' + resultado_alias + '" data-origem="' + resultado_alias2 + '" data-preconormal="3600"><td>' + resultado_final + '</td><td>' + resultado_final2 + '</td><td class="pontos">A partir de <strong> <span>' + valor[i] + ' </span></strong> <strong>pontos</strong> </td><td class="botao">  <a href="' + link[i] + '"><button class="atomoBtn atomo-texto-branco atomo-bg-azul_3969ad">Resgate já</button> </a ></td></tr>\n<!-- ./ ITEM -->\n\n');
+
+      }
+
+      final = outros_resultados;
+      final.sort();
+      final1 = '';
+
+      var resultados_destaques1 = '';
+
+      for (var i = 0; i < final.length; i++) {
+        final1 += final[i];
+      }
+
+      for (var i = 0; i < resultados_destaques.length; i++) {
+        resultados_destaques1 += resultados_destaques[i];
+      }
+
+      resultados_destaques = resultados_destaques1;
+      final = final1;
+      document.getElementById('resultado_final').innerHTML = resultados_destaques + final;
+
+    });
+
+    $('#botao-converter1').click(function () {
+
+      var sigla_origem_ft = $('#sigla_origem_ft').val().split('\n');
+      var nome_origem_ft = $('#nome_origem_ft').val().split('\n');
+
+      var sigla_destino_ft = $('#sigla_destino_ft').val().split('\n');
+      var nome_destino_ft = $('#nome_destino_ft').val().split('\n');
+
+      var resultado_origem = '';
+      var resultado_destino = '';
+
+
+      // Loop para validar e converter o conteúdo para html
+
+      var sigla_origem_ft = $('#sigla_origem_ft').val().split('\n');
+      var nome_origem_ft = $('#nome_origem_ft').val().split('\n');
+
+      var sigla_destino_ft = $('#sigla_destino_ft').val().split('\n');
+      var nome_destino_ft = $('#nome_destino_ft').val().split('\n');
+
+      var resultado_origem = '';
+      var resultado_destino = '';
+      var resultado_origem1 = [];
+      var resultado_destino1 = [];
+
+      // Loop para validar e converter o conteúdo para html
+
+
+      for (var i = 0; i < sigla_origem_ft.length; i++) {
+
+        var sigla_origem_ft1 = sigla_origem_ft[i];
+        var nome_origem_ft1 = nome_origem_ft[i];
+
+        var sigla_destino_ft1 = sigla_destino_ft[i];
+        var nome_destino_ft1 = nome_destino_ft[i];
+
+        resultado_origem += alias(nome_origem_ft1 + ' (' + sigla_origem_ft1 + ')') + '\n';
+        resultado_destino += alias(nome_destino_ft1 + ' (' + sigla_destino_ft1 + ')') + '\n';
+
+        resultado_origem1.push(nome_origem_ft1 + ' (' + sigla_origem_ft1 + ')');
+        resultado_destino1.push(nome_destino_ft1 + ' (' + sigla_destino_ft1 + ')');
+
+      }
+
+
+      a = resultado_origem1;
+      b = {};
+      for (var i = 0; i < a.length; i++) {
+        b[a[i]] = a[i];
+      }
+      arr = [];
+      for (var key in b) {
+        arr.push(key);
+      }
+
+      aa = resultado_destino1;
+      bb = {};
+      for (var i = 0; i < aa.length; i++) {
+        bb[aa[i]] = aa[i];
+      }
+      arr1 = [];
+      for (var key in bb) {
+        arr1.push(key);
+      }
+
+
+      aaa = sigla_origem_ft;
+      bbb = {};
+      for (var i = 0; i < aaa.length; i++) {
+        bbb[aaa[i]] = aaa[i];
+      }
+      sigla_origem_ft = [];
+      for (var key in bbb) {
+        sigla_origem_ft.push(key);
+      }
+
+      var arr2 = [];
+      for (var i = 0; i < arr.length; i++) {
+        arr2 += alias(arr[i]);
+      }
+
+      var resultado_origem = [];
+
+      for (var i = 0; i < arr.length; i++) {
+
+        resultado_origem.push('<!--ITEM-->\n<div class="item_search origem" data-param="origem" data-cor="' + arr[i] + '" data-val="' + alias(sigla_origem_ft[i]) + '">' + arr[i] + '</div>\n<!--./ITEM-->\n\n');
+
+      }
+
+      var resultado_destino = [];
+
+      for (var i = 0; i < arr1.length; i++) {
+
+        resultado_destino.push('<!--ITEM-->\n<div class="item_search destino" data-param="destino" data-val="' + alias(arr1[i]) + '">' + arr1[i] + '</div>\n<!--./ITEM-->\n\n');
+
+      }
+
+      resultado_destino.sort();
+      resultado_destino_2 = '';
+
+      for (var i = 0; i < resultado_destino.length; i++) {
+        resultado_destino_2 += resultado_destino[i];
+      }
+      resultado_destino = resultado_destino_2;
+
+
+      resultado_origem.sort();
+      resultado_origem_2 = '';
+
+      for (var i = 0; i < resultado_origem.length; i++) {
+        resultado_origem_2 += resultado_origem[i];
+      }
+
+      resultado_origem = resultado_origem_2;
+
+
+      document.getElementById('resultado_origem').innerHTML = resultado_origem;
+      document.getElementById('resultado_destino').innerHTML = resultado_destino;
+
+    });
+  });
+
+
+</script>
+
+<style>
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+</style>
+
+
+<div class="container">
+  <div class="col-md-12" style="background-color: #eeeeee; padding: 20px;">
+
+    <h3>Dados da planilha:</h3>
+    <form>
+
+      <div class="row">
+
+
+
+        <div class="col-md-2">
+          <label>
+            Sigla de Origem (Departure):
+          </label>
+          <textarea id="sigla_origem" rows="8" cols="15" placeholder="Sigla de Origem (Departure):"></textarea>
+        </div>
+
+        <div class="col-md-2">
+          <label>
+            Nome da Origem (Departure):
+          </label>
+          <textarea id="nome_origem" rows="8" cols="20" placeholder="Nome da Origem (Departure):"></textarea>
+        </div>
+
+
+        <div class="col-md-2">
+
+          <label>
+            Sigla do Destino (Arrival):
+          </label>
+          <textarea id="sigla_destino" rows="8" cols="15" placeholder="Sigla do Destino (Arrival):"></textarea>
+        </div>
+
+        <div class="col-md-2">
+          <label>
+            Nome do Destino (Arrival):
+          </label>
+          <textarea id="nome_destino" rows="8" cols="20" placeholder="Nome do Destino (Arrival):"></textarea>
+        </div>
+
+        <div class="col-md-2">
+          <label>
+            Valor:
+          </label>
+          <textarea id="valor" rows="8" cols="15" placeholder="Valor:"></textarea>
+        </div>
+
+        <div class="col-md-2">
+          <label>
+            Link:
+          </label>
+          <textarea id="link" rows="8" cols="20" placeholder="Link:"></textarea>
+        </div>
+
+        <div class="col-md-2">
+          <label>
+            <br>
+            Destaque:
+          </label>
+          <textarea id="destaque" rows="8" cols="20" placeholder="Destaque:"></textarea>
+        </div>
+
+
+      </div>
+
+      <br>
+      <button id="botao-converter" type="button">Gerar HTML</button>
+    </form>
+    <br>
+    <h3>Resultados obtidos:</h3>
+
+    <textarea id="resultado_final" rows="10" cols="80" placeholder="Resultado:"></textarea>
+
+    <br>
+    <br>
+  </div>
+
+  <div class="col-md-12">
+    <hr>
+  </div>
+
+
+  <div class="col-md-12" style="background-color: #cccccc; padding: 20px;">
+    <h3>Dados da planilha filtro:</h3>
+    <form>
+
+      <div class="row">
+
+        <div class="col-md-3">
+          <label>
+            Sigla da Origem (Departure):
+          </label>
+          <textarea id="sigla_origem_ft" rows="8" cols="20" placeholder="Sigla da Origem (Departure):"></textarea>
+        </div>
+
+        <div class="col-md-3">
+          <label>
+            Nome da Origem (Departure):
+          </label>
+          <textarea id="nome_origem_ft" rows="8" cols="25" placeholder="Nome da Origem (Departure):"></textarea>
+        </div>
+
+        <div class="col-md-3">
+          <label>
+            Sigla Destino (Arrival):
+          </label>
+          <textarea id="sigla_destino_ft" rows=" 8" cols="20" placeholder="Sigla Destino (Arrival):"></textarea>
+        </div>
+
+        <div class="col-md-3">
+          <label>
+            Nome do Destino (Arrival):
+          </label>
+          <textarea id="nome_destino_ft" rows="8" cols="25" placeholder="Nome do Destino (Arrival):"></textarea>
+        </div>
+      </div>
+
+      <br>
+      <button id="botao-converter1" type="button">Gerar dados</button>
+    </form>
+    <br>
+    <h3>Resultados obtidos:</h3>
+
+    <div class="row">
+      <div class="col-md-6">
+        <label>
+          Dados de Origem (Departure):
+        </label>
+        <textarea id="resultado_origem" rows="8" cols="60" placeholder="Dados de Origem"></textarea>
+      </div>
+
+      <div class="col-md-6">
+        <label>
+          Dados de Destino (Arrival):
+        </label>
+        <textarea id="resultado_destino" rows="8" cols="60" placeholder="Dados de Destino"></textarea>
+      </div>
+    </div>
+    <br><br><br><br>
+  </div>
+</div>

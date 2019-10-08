@@ -1,4 +1,4 @@
-<!-- v 1.3.3.3 -->
+<!-- v 1.3.3.4 -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -137,7 +137,9 @@
           resultado_alias2 = alias(linha2);
           valor1 = valor[i].toLocaleString('pt-BR');
 
-          var valor1 = parseInt(valor[i]);
+
+          var valor1 = valor[i].replace(/[^0-9]/g, '');
+          var valor1 = parseInt(valor1);
           valor1 = valor1.toLocaleString('pt-BR');
 
           final.push('<!-- ITEM ordem -> ' + resultado_final2 + ' -->\n<tr class="item_viagem"  data-origem="' + resultado_alias2 + '" data-destino="' + resultado_alias + '" data-preconormal="3600"><td>' + resultado_final2 + '</td><td>' + resultado_final + '</td><td class="pontos">A partir de <strong> <span>' + valor1 + ' </span></strong> <strong>pontos</strong> </td><td class="botao">  <a href="' + link[i] + '"><button class="atomoBtn atomo-texto-branco atomo-bg-azul_3969ad">Resgate já</button> </a ></td></tr>\n<!-- ./ ITEM -->\n\n');

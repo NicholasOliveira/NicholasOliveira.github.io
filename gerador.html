@@ -89,11 +89,11 @@
         if (status == 'true') {
 
           sigla_origem_option = 'true';
-          style_span1 = '<style>.span_sigla_origem, .span_sigla_origem1{display: block !important; }</style>\n';
+          style_span1 = '<style>.span_sigla_origem, .span_sigla_origem1{display: inline; }</style>\n';
           return style_span1
         } else {
           sigla_origem_option = 'false';
-          style_span1 = '<style>.span_sigla_origem, .span_sigla_origem1{display: none !important; }</style>\n';
+          style_span1 = '<style>.span_sigla_origem, .span_sigla_origem1{display: none; }</style>\n';
           return style_span1
         }
       }
@@ -101,11 +101,11 @@
       if (option == 'destino') {
         if (status == 'true') {
           sigla_destino_option = 'true';
-          style_span2 = '<style>.span_sigla_destino, .span_sigla_destino1{display: block !important; }</style>\n';
+          style_span2 = '<style>.span_sigla_destino, .span_sigla_destino1{display: inline; }</style>\n';
           return style_span2
         } else {
           sigla_destino_option = 'false';
-          style_span2 = '<style>.span_sigla_destino, .span_sigla_destino1{display: none !important; }</style>\n';
+          style_span2 = '<style>.span_sigla_destino, .span_sigla_destino1{display: none; }</style>\n';
           return style_span2
 
         }

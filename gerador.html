@@ -1,4 +1,4 @@
-<!-- v 1.3.4 -->
+<!-- v 1.3.5 -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -28,6 +28,14 @@
 
 
   <style>
+    .dstv {
+      background-color: #cccccc;
+    }
+
+    .active {
+      background-color: #fff;
+    }
+
     ::-webkit-input-placeholder {
       font-size: 12px;
     }
@@ -84,17 +92,20 @@
     }
 
     function sigla_option(option, status) {
-      console.log(option);
-      console.log(status);
       if (option == 'origem') {
         if (status == 'true') {
-
           sigla_origem_option = 'true';
           style_span1 = '<style>.span_sigla_origem, .span_sigla_origem1{display: block !important; }</style>\n';
+          $('.textarea').addClass('active');
+          $('.textarea').removeClass('dstv');
+          $('.textarea').removeAttr('readonly');
           return style_span1
         } else {
           sigla_origem_option = 'false';
           style_span1 = '<style>.span_sigla_origem, .span_sigla_origem1{display: none !important; }</style>\n';
+          $('.textarea').addClass('dstv');
+          $('.textarea').removeClass('active');
+          $('.textarea').attr('readonly', 'readonly');
           return style_span1
         }
       }
@@ -108,7 +119,6 @@
           sigla_destino_option = 'false';
           style_span2 = '<style>.span_sigla_destino, .span_sigla_destino1{display: none !important; }</style>\n';
           return style_span2
-
         }
       }
     }
@@ -401,7 +411,8 @@
             <label>
               Sigla de Origem (Departure):
             </label>
-            <textarea id="sigla_origem" rows="8" cols="15" placeholder="Sigla de Origem (Departure):"></textarea>
+            <textarea id="sigla_origem" rows="8" cols="15" placeholder="Sigla de Origem (Departure):"
+              class="textarea"></textarea>
           </div>
 
           <div class="col-md-2">
@@ -417,7 +428,8 @@
             <label>
               Sigla do Destino (Arrival):
             </label>
-            <textarea id="sigla_destino" rows="8" cols="15" placeholder="Sigla do Destino (Arrival):"></textarea>
+            <textarea id="sigla_destino" rows="8" cols="15" class="textarea"
+              placeholder="Sigla do Destino (Arrival):"></textarea>
           </div>
 
           <div class="col-md-2">
@@ -482,7 +494,8 @@
             <label>
               Sigla da Origem (Departure):
             </label>
-            <textarea id="sigla_origem_ft" rows="8" cols="20" placeholder="Sigla da Origem (Departure):"></textarea>
+            <textarea class="textarea" id="sigla_origem_ft" rows="8" cols="20"
+              placeholder="Sigla da Origem (Departure):"></textarea>
           </div>
 
           <div class="col-md-3">
@@ -496,7 +509,8 @@
             <label>
               Sigla Destino (Arrival):
             </label>
-            <textarea id="sigla_destino_ft" rows=" 8" cols="20" placeholder="Sigla Destino (Arrival):"></textarea>
+            <textarea class="textarea" id="sigla_destino_ft" rows=" 8" cols="20"
+              placeholder="Sigla Destino (Arrival):"></textarea>
           </div>
 
           <div class="col-md-3">
